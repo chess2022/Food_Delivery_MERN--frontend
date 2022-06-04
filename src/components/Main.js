@@ -5,7 +5,6 @@ import Login from "../pages/Login"
 import Restaurants from "../pages/Restaurants"
 import Menu from "../pages/Menu"
 import Order from "../pages/Order"
-import Dash from "../pages/Dashboard"
 import Success from "../pages/Success"
 
 export default function Main(props) {
@@ -16,13 +15,14 @@ export default function Main(props) {
   
   const URL = "https://cw-food-delivery-mern.herokuapp.com/"
 
+
   const getUsers = async () => {
-    const data = await fetch(URL).then(res => res.json())
-    setUsers(data)
+  const data = await fetch(URL + 'users').then(res => res.json())
+  setUsers(data)
   }
-  
+
   const createUsers = async (user) => {
-    await fetch(URL, {
+    await fetch(URL + 'users', {
       method: "POST",
       headers: {
         "Content-Type": "Application/json"
@@ -31,6 +31,8 @@ export default function Main(props) {
     })
     getUsers()
   }
+  console.log(URL + 'users')
+
   const updateOrders = async (order, id) => {
     await fetch(URL + 'order/' + id, {
       method: "PUT",
@@ -39,7 +41,7 @@ export default function Main(props) {
       },
       body: JSON.stringify(order)
     })
-    getUsers()
+    getOrders()
   }
 
   const deleteOrders = async (id) => {
@@ -88,16 +90,17 @@ export default function Main(props) {
   <main>
       <Routes>
         <Route path="/" element={<Login 
-          users={users}/>} /> 
+          users={users}
+          getUsers={getUsers} />} /> 
         <Route path="/signup" element={<SignUpForm
           users={users}
           createUsers={createUsers} />} />
         <Route path="/login" element={<Login
           user={users} />} />
         <Route path="/success" element={<Success/>} />
-        <Route path="/user" element={<Dash
+        {/* <Route path="/user" element={<Dash
           users={users}
-          orders={orders} />} />
+          orders={orders} />} /> */}
         <Route path="/restaurants" element={<Restaurants
           restaurants={restaurants} />} />
         <Route path="/restaurants/:id" element={<Menu
