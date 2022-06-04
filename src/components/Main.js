@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Routes, Route } from "react-router-dom"
-import Signup from "../pages/Signup"
+import SignUpForm from "../pages/Signup"
 import Login from "../pages/Login"
 import Restaurants from "../pages/Restaurants"
 import Menu from "../pages/Menu"
@@ -78,13 +78,13 @@ export default function Main(props) {
   <main>
       <Routes>
         <Route path="/" element={<Login 
-          users={users}/>} />
-        <Route path="/signup" element={<Signup
+          users={users}/>} /> 
+        <Route path="/signup" element={<SignUpForm
           users={users}
           createUsers={createUsers} />} />
         <Route path="/login" element={<Login
           user={users} />} />
-        <Route path="/user" element={<Dash
+        < Route exact path="/user" element={<Dash
           users={users}
           orders={orders} />} />
         <Route path="/restaurants" element={<Restaurants
@@ -94,10 +94,10 @@ export default function Main(props) {
         <Route path="/order" element={<Order
           orders={orders}
           createOrders={createOrders} />} />
-        <Route path="/user/:id" element={<Dash
+        <Route exact path="/user/:id" element={<Dash
           users={users}
           updateUsers={updateUsers}
-          deleteUsers={deleteUsers} />} />
+          deleteUsers={deleteUsers} />} /> 
       </Routes>
   </main>
   )

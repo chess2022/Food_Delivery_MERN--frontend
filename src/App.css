@@ -13,9 +13,11 @@ body {
   background-color: #15172b;
   border-radius: 20px;
   box-sizing: border-box;
+  display: block;
   height: 700px;
   padding: 20px;
   width: 400px;
+  overflow: auto;
 }
 
 .title {
@@ -45,7 +47,7 @@ body {
 }
 
 .ic2 {
-  margin-top: 30px;
+  margin-top: 15px;
 }
 
 .input {
@@ -117,6 +119,7 @@ body {
   font-size: 18px;
   height: 50px;
   margin-top: 38px;
+  margin-bottom: 38px;
   outline: 0;
   text-align: center;
   width: 100%;
