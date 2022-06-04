@@ -6,11 +6,13 @@ import Restaurants from "../pages/Restaurants"
 import Menu from "../pages/Menu"
 import Order from "../pages/Order"
 import Dash from "../pages/Dashboard"
+import Success from "../pages/Success"
 
 export default function Main(props) {
   const [users, setUsers] = useState(null)
   const [restaurants, setRestaurants] = useState(null)
   const [orders, setOrders] = useState(null)
+  const [menu, setMenu] = useState(null)
   
   const URL = "https://cw-food-delivery-mern.herokuapp.com/"
 
@@ -29,26 +31,26 @@ export default function Main(props) {
     })
     getUsers()
   }
-  const updateUsers = async (user, id) => {
-    await fetch(URL + id, {
+  const updateOrders = async (order, id) => {
+    await fetch(URL + 'order/' + id, {
       method: "PUT",
       headers: {
         "Content-Type": "Application/json"
       },
-      body: JSON.stringify(user)
+      body: JSON.stringify(order)
     })
     getUsers()
   }
 
-  const deleteUsers = async (id) => {
-    await fetch(URL + id, {
+  const deleteOrders = async (id) => {
+    await fetch(URL + 'order/' + id, {
       method: "DELETE",
     })
-    getUsers()
+    getOrders()
   }
 
   const getRestaurants = async () => {
-    const data = await fetch(URL).then(res => res.json())
+    const data = await fetch(URL + 'restaurants').then(res => res.json())
     setRestaurants(data)
   }
 
@@ -57,20 +59,28 @@ export default function Main(props) {
     setOrders(data);
   };
 
-  const createOrders = async (user) => {
-    await fetch(URL, {
+  const createOrders = async (order) => {
+    await fetch(URL + 'order', {
       method: "POST",
       headers: {
         "Content-Type": "Application/json",
       },
-      body: JSON.stringify(user),
+      body: JSON.stringify(order),
     });
     getOrders();
   };
 
+  const getMenu = async (id) => {
+    const data = await fetch(URL + 'restaurant/' + id).then(res => res.json())
+    setMenu(data.menuItem)
+  }
+
+
+
   useEffect(() => {getUsers()}, [])
   useEffect(() => {getRestaurants()}, [])
   useEffect(() => {getOrders()}, [])
+  useEffect(() => {getMenu()}, [])
 
   
 
@@ -84,20 +94,22 @@ export default function Main(props) {
           createUsers={createUsers} />} />
         <Route path="/login" element={<Login
           user={users} />} />
-        < Route exact path="/user" element={<Dash
+        <Route path="/success" element={<Success/>} />
+        <Route path="/user" element={<Dash
           users={users}
           orders={orders} />} />
         <Route path="/restaurants" element={<Restaurants
           restaurants={restaurants} />} />
         <Route path="/restaurants/:id" element={<Menu
-          restaurants={restaurants} />} />
+          restaurants={restaurants}
+          menu={menu} />} />
         <Route path="/order" element={<Order
           orders={orders}
           createOrders={createOrders} />} />
-        <Route exact path="/user/:id" element={<Dash
-          users={users}
-          updateUsers={updateUsers}
-          deleteUsers={deleteUsers} />} /> 
+        <Route path="/order/:id" element={<Order
+          orders={orders}
+          updateOrders={updateOrders}
+          deleteOrders={deleteOrders} />} /> 
       </Routes>
   </main>
   )
